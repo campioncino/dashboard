@@ -87,36 +87,58 @@ const NotesApp = () => {
 
   // Filtro note
   const filteredNotes = notes.filter(note => {
-    const matchesFolder = selectedFolder === 'all' || note.folderId === selectedFolder;
+    const matchesFolder = selectedFolder === 'all' || note.folder_id === selectedFolder;
     const matchesSearch = note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          note.content.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFolder && matchesSearch;
   });
 
-  const handleCreateNote = () => {
-    const id = Date.now().toString();
-    const note = {
-      ...newNote,
-      id,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      history: newNote.type === 'code' ? [{ 
-        version: 1, 
-        content: newNote.content, 
-        timestamp: new Date().toISOString(),
-        changes: 'Versione iniziale'
-      }] : []
-    };
-    
-    setNotes([...notes, note]);
-    setNewNote({ title: '', content: '', type: 'text', folderId: '', tags: [] });
-    setShowCreateDialog(false);
+  const handleCreateNote = async () => {
+    try {
+      const noteData = {
+        title: newNote.title,
+        content: newNote.content,
+        type: newNote.type,
+        folder_id: newNote.folder_id || null,
+        tag_names: newNote.tag_names
+      };
+      
+      const createdNote = await notesAPI.createNote(noteData);
+      setNotes([createdNote, ...notes]);
+      setNewNote({ title: '', content: '', type: 'text', folder_id: '', tag_names: [] });
+      setShowCreateDialog(false);
+      
+      toast({
+        title: "Successo",
+        description: "Appunto creato con successo",
+      });
+    } catch (err) {
+      toast({
+        title: "Errore",
+        description: err.message,
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleDeleteNote = (noteId) => {
-    setNotes(notes.filter(note => note.id !== noteId));
-    if (selectedNote?.id === noteId) {
-      setSelectedNote(null);
+  const handleDeleteNote = async (noteId) => {
+    try {
+      await notesAPI.deleteNote(noteId);
+      setNotes(notes.filter(note => note.id !== noteId));
+      if (selectedNote?.id === noteId) {
+        setSelectedNote(null);
+      }
+      
+      toast({
+        title: "Successo", 
+        description: "Appunto eliminato con successo",
+      });
+    } catch (err) {
+      toast({
+        title: "Errore",
+        description: err.message,
+        variant: "destructive",
+      });
     }
   };
 
@@ -124,30 +146,46 @@ const NotesApp = () => {
     setEditingNote({ ...note });
   };
 
-  const handleSaveEdit = () => {
-    const updatedNotes = notes.map(note => 
-      note.id === editingNote.id 
-        ? {
-            ...editingNote,
-            updatedAt: new Date().toISOString(),
-            history: editingNote.type === 'code' && note.content !== editingNote.content
-              ? [
-                  ...note.history,
-                  {
-                    version: note.history.length + 1,
-                    content: editingNote.content,
-                    timestamp: new Date().toISOString(),
-                    changes: 'Modifica contenuto'
-                  }
-                ]
-              : note.history
-          }
-        : note
-    );
-    
-    setNotes(updatedNotes);
-    setSelectedNote(editingNote);
-    setEditingNote(null);
+  const handleSaveEdit = async () => {
+    try {
+      const updateData = {
+        title: editingNote.title,
+        content: editingNote.content,
+        tag_names: editingNote.tags.map(tag => tag.name)
+      };
+      
+      const updatedNote = await notesAPI.updateNote(editingNote.id, updateData);
+      setNotes(notes.map(note => 
+        note.id === editingNote.id ? updatedNote : note
+      ));
+      setSelectedNote(updatedNote);
+      setEditingNote(null);
+      
+      toast({
+        title: "Successo",
+        description: "Appunto aggiornato con successo",
+      });
+    } catch (err) {
+      toast({
+        title: "Errore", 
+        description: err.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const loadNoteHistory = async (noteId) => {
+    try {
+      const history = await notesAPI.getNoteHistory(noteId);
+      setNoteHistory(history);
+      setShowHistoryDialog(true);
+    } catch (err) {
+      toast({
+        title: "Errore",
+        description: "Impossibile caricare lo storico",
+        variant: "destructive",
+      });
+    }
   };
 
   const getTypeIcon = (type) => {
