@@ -424,11 +424,11 @@ const NotesApp = () => {
                     <h2 className="text-2xl font-bold">{selectedNote.title}</h2>
                   </div>
                   <div className="flex space-x-2">
-                    {selectedNote.type === 'code' && selectedNote.history?.length > 0 && (
+                    {selectedNote.type === 'code' && (
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => setShowHistoryDialog(true)}
+                        onClick={() => loadNoteHistory(selectedNote.id)}
                       >
                         <History className="w-4 h-4 mr-2" />
                         Storico
