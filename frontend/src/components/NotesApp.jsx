@@ -504,9 +504,9 @@ const NotesApp = () => {
         <Dialog open={showHistoryDialog} onOpenChange={setShowHistoryDialog}>
           <DialogContent className="max-w-4xl max-h-[80vh]">
             <DialogHeader>
-              <DialogTitle>Storico Modifiche - {selectedNote.title}</DialogTitle>
+              <DialogTitle>Storico Modifiche - {selectedNote?.title}</DialogTitle>
             </DialogHeader>
-            <HistoryViewer history={selectedNote.history || []} />
+            <HistoryViewer history={noteHistory} />
           </DialogContent>
         </Dialog>
       )}
