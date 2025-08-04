@@ -275,7 +275,7 @@ const NotesApp = () => {
                     <SelectItem value="list">Lista</SelectItem>
                   </SelectContent>
                 </Select>
-                <Select value={newNote.folderId} onValueChange={(value) => setNewNote({...newNote, folderId: value})}>
+                <Select value={newNote.folder_id} onValueChange={(value) => setNewNote({...newNote, folder_id: value})}>
                   <SelectTrigger>
                     <SelectValue placeholder="Seleziona cartella" />
                   </SelectTrigger>
@@ -291,7 +291,7 @@ const NotesApp = () => {
                   onChange={(e) => setNewNote({...newNote, content: e.target.value})}
                   rows={6}
                 />
-                <Button onClick={handleCreateNote} className="w-full">
+                <Button onClick={handleCreateNote} className="w-full" disabled={!newNote.title || !newNote.content}>
                   Crea Appunto
                 </Button>
               </div>
