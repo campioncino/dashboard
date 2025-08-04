@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  notes-dashboard:
+    build: .
+    container_name: notes-app
+    ports:
+      - "8001:8001"
+    volumes:
+      # Persiste database SQLite
+      - ./data:/app/data
+      # Optional: per sviluppo locale
+      # - ./backend:/app/backend
+    environment:
+      - PYTHONPATH=/app/backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  notes-data:
+    driver: local
+
+networks:
+  default:
+    name: notes-network

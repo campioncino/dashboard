@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# Build artifacts
+frontend/build/
+.git/
+
+# Development files
+.env.local
+.env.development
+*.log
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Database
+*.db
+data/
+
+# Temp files
+*.tmp
+*.swp
