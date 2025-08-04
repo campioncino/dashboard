@@ -454,17 +454,17 @@ const NotesApp = () => {
                 <div className="flex flex-wrap gap-2 mb-2">
                   {selectedNote.tags.map(tag => (
                     <Badge 
-                      key={tag}
-                      className={`${getTagColor(tag)} text-white`}
+                      key={tag.name}
+                      className={`${tag.color} text-white`}
                     >
                       <Tag className="w-3 h-3 mr-1" />
-                      {tag}
+                      {tag.name}
                     </Badge>
                   ))}
                 </div>
                 <p className="text-sm text-gray-500">
-                  Creato: {new Date(selectedNote.createdAt).toLocaleString()} | 
-                  Modificato: {new Date(selectedNote.updatedAt).toLocaleString()}
+                  Creato: {new Date(selectedNote.created_at).toLocaleString()} | 
+                  Modificato: {new Date(selectedNote.updated_at).toLocaleString()}
                 </p>
               </div>
               <div className="flex-1 p-6">
