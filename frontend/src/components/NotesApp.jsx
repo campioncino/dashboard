@@ -352,16 +352,16 @@ const NotesApp = () => {
                   <div className="flex flex-wrap gap-1">
                     {note.tags.map(tag => (
                       <Badge 
-                        key={tag} 
+                        key={tag.name} 
                         variant="secondary"
-                        className={`text-xs ${getTagColor(tag)} text-white`}
+                        className={`text-xs ${tag.color} text-white`}
                       >
-                        {tag}
+                        {tag.name}
                       </Badge>
                     ))}
                   </div>
                   <p className="text-xs text-gray-400 mt-2">
-                    {new Date(note.updatedAt).toLocaleDateString()}
+                    {new Date(note.updated_at).toLocaleDateString()}
                   </p>
                 </CardContent>
               </Card>
