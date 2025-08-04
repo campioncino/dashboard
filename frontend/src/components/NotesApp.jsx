@@ -21,11 +21,14 @@ import {
   Trash2, 
   History,
   Save,
-  X
+  X,
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
-import { mockData } from '../services/mockData';
+import notesAPI from '../services/api';
 import CodeEditor from './CodeEditor';
 import HistoryViewer from './HistoryViewer';
+import { useToast } from '../hooks/use-toast';
 
 const NotesApp = () => {
   const [notes, setNotes] = useState([]);
