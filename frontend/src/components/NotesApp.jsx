@@ -320,7 +320,7 @@ const NotesApp = () => {
                 className="w-full justify-start"
                 onClick={() => setSelectedFolder(folder.id)}
               >
-                {folder.name} ({notes.filter(n => n.folderId === folder.id).length})
+                {folder.name} ({notes.filter(n => n.folder_id === folder.id).length})
               </Button>
             ))}
           </div>
