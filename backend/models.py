@@ -37,7 +37,7 @@ class NoteHistoryEntry(BaseModel):
 class NoteBase(BaseModel):
     title: str
     content: str
-    type: str = Field(..., regex="^(text|code|list)$")
+    type: str = Field(..., pattern="^(text|code|list)$")
     folder_id: Optional[str] = None
 
 class NoteCreate(NoteBase):
