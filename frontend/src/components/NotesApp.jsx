@@ -40,23 +40,50 @@ const NotesApp = () => {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showHistoryDialog, setShowHistoryDialog] = useState(false);
   const [editingNote, setEditingNote] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [noteHistory, setNoteHistory] = useState([]);
+
+  const { toast } = useToast();
 
   // Form state
   const [newNote, setNewNote] = useState({
     title: '',
     content: '',
     type: 'text',
-    folderId: '',
-    tags: []
+    folder_id: '',
+    tag_names: []
   });
 
   useEffect(() => {
-    // Carica dati mock
-    const data = mockData.getData();
-    setNotes(data.notes);
-    setFolders(data.folders);
-    setTags(data.tags);
+    loadInitialData();
   }, []);
+
+  const loadInitialData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const [notesData, foldersData, tagsData] = await Promise.all([
+        notesAPI.getNotes(),
+        notesAPI.getFolders(),
+        notesAPI.getTags()
+      ]);
+      
+      setNotes(notesData);
+      setFolders(foldersData);
+      setTags(tagsData);
+    } catch (err) {
+      setError(err.message);
+      toast({
+        title: "Errore",
+        description: "Impossibile caricare i dati",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filtro note
   const filteredNotes = notes.filter(note => {
