@@ -64,6 +64,17 @@ const NotesApp = () => {
     loadInitialData();
   }, []);
 
+  // Gestisce selezione automatica della nota dall'URL
+  useEffect(() => {
+    const noteId = searchParams.get('note');
+    if (noteId && notes.length > 0) {
+      const note = notes.find(n => n.id === noteId);
+      if (note) {
+        setSelectedNote(note);
+      }
+    }
+  }, [searchParams, notes]);
+
   const loadInitialData = async () => {
     try {
       setLoading(true);
