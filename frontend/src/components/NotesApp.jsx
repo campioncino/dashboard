@@ -250,7 +250,23 @@ const NotesApp = () => {
       {/* Sidebar */}
       <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">I Miei Appunti</h1>
+          {/* Navigation Header */}
+          <div className="flex items-center justify-between mb-4">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => navigate('/')}
+              className="text-gray-600 hover:text-gray-900"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Torna ai Progetti
+            </Button>
+          </div>
+          
+          <h1 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+            <FileText className="w-6 h-6 mr-2" />
+            Dashboard
+          </h1>
           
           {/* Search Bar */}
           <div className="relative mb-4">
