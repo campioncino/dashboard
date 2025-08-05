@@ -47,6 +47,8 @@ const NotesApp = () => {
   const [error, setError] = useState(null);
   const [noteHistory, setNoteHistory] = useState([]);
 
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
 
   // Form state
