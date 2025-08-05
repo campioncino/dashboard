@@ -23,8 +23,11 @@ import {
   Save,
   X,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  ArrowLeft,
+  Home
 } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import notesAPI from '../services/api';
 import CodeEditor from './CodeEditor';
 import HistoryViewer from './HistoryViewer';
